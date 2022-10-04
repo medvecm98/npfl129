@@ -23,13 +23,16 @@ def main(args: argparse.Namespace) -> float:
     # about it using `print(dataset.DESCR)`.
 
     # TODO: Append a new feature to all input data, with value "1"
+    data_w_ones = np.c_[ dataset.data, np.ones(int(dataset.data.size / 10)) ]
 
     # TODO: Split the dataset into a train set and a test set.
     # Use `sklearn.model_selection.train_test_split` method call, passing
     # arguments `test_size=args.test_size, random_state=args.seed`.
+    train, test = sklearn.model_selection.train_test_split(data_w_ones, test_size=args.test_size, random_state=args.seed)
 
     # TODO: Solve the linear regression using the algorithm from the lecture,
     # explicitly computing the matrix inverse (using `np.linalg.inv`).
+
 
     # TODO: Predict target values on the test set.
 
