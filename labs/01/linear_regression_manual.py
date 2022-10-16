@@ -4,6 +4,7 @@ import argparse
 import numpy as np
 import sklearn.datasets
 import sklearn.model_selection
+import math
 
 parser = argparse.ArgumentParser()
 # These arguments will be set appropriately by ReCodEx, even if you change them.
@@ -22,24 +23,32 @@ def main(args: argparse.Namespace) -> float:
     # If you want to learn about the dataset, you can print some information
     # about it using `print(dataset.DESCR)`.
 
-    # TODO: Append a new feature to all input data, with value "1"
+    # Append a new feature to all input data, with value "1"
     data_w_ones = np.c_[ dataset.data, np.ones(int(dataset.data.size / 10)) ]
 
-    # TODO: Split the dataset into a train set and a test set.
+    # Split the dataset into a train set and a test set.
     # Use `sklearn.model_selection.train_test_split` method call, passing
     # arguments `test_size=args.test_size, random_state=args.seed`.
-    train, test = sklearn.model_selection.train_test_split(data_w_ones, test_size=args.test_size, random_state=args.seed)
+    data_train, data_test, target_train, target_test = sklearn.model_selection.train_test_split(data_w_ones, dataset.target, test_size=args.test_size, random_state=args.seed)
 
-    # TODO: Solve the linear regression using the algorithm from the lecture,
+    # Solve the linear regression using the algorithm from the lecture,
     # explicitly computing the matrix inverse (using `np.linalg.inv`).
+    weights = np.dot(np.dot(np.linalg.inv(np.dot(data_train.T, data_train)), data_train.T), target_train)
 
+    # Predict target values on the test set.
+    prediction = np.dot(data_test, weights)
 
-    # TODO: Predict target values on the test set.
+    # Manually compute root mean square error on the test set predictions.
+    np.dot(prediction.T, target_test) - target_test
+    sum = 0
+    for i in range(0, prediction.size):
+        sum += math.pow(prediction[i] - target_test[i], 2)
 
-    # TODO: Manually compute root mean square error on the test set predictions.
-    rmse = None
+    sum *= 1/prediction.size
 
-    return rmse
+    sum = math.sqrt(sum)
+
+    return sum
 
 
 if __name__ == "__main__":
