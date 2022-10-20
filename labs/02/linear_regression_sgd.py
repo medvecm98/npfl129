@@ -54,7 +54,7 @@ def main(args: argparse.Namespace) -> tuple[list[float], float, float]:
         # You can assume that `args.batch_size` exactly divides `train_data.shape[0]`.
 
         gradient = 0
-        for batch_counter in range(train_data.shape[0] // args.batch_size):
+        for batch_counter in range(train_data.shape[0] // args.batch_size): #one batch
 
             batch_sum = 0
             for i in range(args.batch_size):
